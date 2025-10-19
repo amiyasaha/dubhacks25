@@ -10,26 +10,44 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import { Plus } from "lucide-react"
+import { createChildAccounts, type ChildData } from "@/app/actions/create-child"
 
 export default function AddChildPage() {
   const router = useRouter()
-  const [children, setChildren] = useState([{ name: "", username: "", password: "" }])
+  const [children, setChildren] = useState<ChildData[]>([{ name: "", username: "", password: "" }])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const addChild = () => {
     setChildren([...children, { name: "", username: "", password: "" }])
   }
 
-  const updateChild = (index: number, field: string, value: string) => {
+  const updateChild = (index: number, field: keyof ChildData, value: string) => {
     const updated = [...children]
     updated[index] = { ...updated[index], [field]: value }
     setChildren(updated)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Implement Supabase child account creation
-    console.log("[v0] Creating children:", children)
-    router.push("/guardian/dashboard")
+    setLoading(true)
+    setError(null)
+
+    try {
+      const result = await createChildAccounts(children)
+
+      if (result.success) {
+        router.push("/guardian/dashboard")
+      } else {
+        setError(result.message || "Failed to create some children")
+        console.error("[v0] Child creation errors:", result.results)
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred")
+      console.error("[v0] Error creating children:", err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -58,6 +76,10 @@ export default function AddChildPage() {
 
           <Card className="p-8 shadow-xl">
             <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">{error}</div>
+              )}
+
               {children.map((child, index) => (
                 <div key={index} className="space-y-4 pb-6 border-b last:border-b-0">
                   <div className="space-y-2">
@@ -106,6 +128,7 @@ export default function AddChildPage() {
                 onClick={addChild}
                 variant="outline"
                 className="w-full border-sprout-green text-sprout-green hover:bg-sprout-light bg-transparent"
+                disabled={loading}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Child
@@ -114,8 +137,9 @@ export default function AddChildPage() {
               <Button
                 type="submit"
                 className="w-full bg-sprout-green hover:bg-sprout-dark text-white font-semibold py-6"
+                disabled={loading}
               >
-                Create Account
+                {loading ? "Creating Accounts..." : "Create Account"}
               </Button>
             </form>
           </Card>

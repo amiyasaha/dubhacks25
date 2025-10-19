@@ -8,22 +8,38 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { X } from "lucide-react"
+import { contributeToGroupSavings } from "@/app/actions/group-savings"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 interface ContributeModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   goalName: string
+  goalId: string
+  childId: string
 }
 
-export function ContributeModal({ open, onOpenChange, goalName }: ContributeModalProps) {
+export function ContributeModal({ open, onOpenChange, goalName, goalId, childId }: ContributeModalProps) {
+  const router = useRouter()
   const [amount, setAmount] = useState("")
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Implement Supabase contribution logic
-    console.log("[v0] Contributing:", { goalName, amount })
-    onOpenChange(false)
-    setAmount("")
+
+    setLoading(true)
+    const result = await contributeToGroupSavings(childId, goalId, Number.parseFloat(amount))
+    setLoading(false)
+
+    if (result.success) {
+      toast.success("Contribution successful!")
+      onOpenChange(false)
+      setAmount("")
+      router.refresh()
+    } else {
+      toast.error(result.error || "Failed to contribute")
+    }
   }
 
   return (
@@ -51,12 +67,17 @@ export function ContributeModal({ open, onOpenChange, goalName }: ContributeModa
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               required
+              disabled={loading}
               className="bg-secondary"
             />
           </div>
 
-          <Button type="submit" className="w-full bg-sprout-green hover:bg-sprout-dark text-white font-semibold py-6">
-            Contribute
+          <Button
+            type="submit"
+            className="w-full bg-sprout-green hover:bg-sprout-dark text-white font-semibold py-6"
+            disabled={loading}
+          >
+            {loading ? "Contributing..." : "Contribute"}
           </Button>
         </form>
       </DialogContent>
