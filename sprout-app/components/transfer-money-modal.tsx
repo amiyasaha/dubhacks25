@@ -42,9 +42,9 @@ export function TransferMoneyModal({ open, onOpenChange, childName }: TransferMo
   const [amount, setAmount] = useState("")
 
   const CLIENT_ID =
-    "AR2g3t6K6ml4SHq8qsos5CoF8wL0S0toZQdCm4LroBKYTMv0XDNd2tAitsqXuwQXYmcGHBbAY714rW2n"
+    "AfdlyNkM4rPwK94_-GRyK7l-3TEijH9yicEuNdqTK6bQ7B6RQ_kANec2ID1I1EuOaePN9Aqkh044epxF"
   const CLIENT_SECRET =
-    "ECnoFCZwhjYsyE25Xlc6rfgLbCocmCh9HkiPLfcY-4X8VmDk2rB_O6bV0VZdkFNxbRHysM9Sya72UJ9V"
+    "EAeUORaHYVy1WwiaYd4GRcMIH1SMBkgnm_L42gosa5aI_BNGAuhOCKwjZUZbQ7doNWxjkUnpKKBHPwK1"
   const ENV: "sandbox" | "live" = "sandbox"
 
   const API_BASE =
@@ -145,8 +145,8 @@ export function TransferMoneyModal({ open, onOpenChange, childName }: TransferMo
     console.log("[v0] Transferring money:", { childName, amount })
 
     try {
-      const senderEmail = "sb-3tr4b47067362@personal.example.com"
-      const recipientEmail = "sb-vhaxv47069972@business.example.com"
+      const senderEmail = "sb-i6wov47082566@personal.example.com"
+      const recipientEmail = "sb-ybtd147070342@business.example.com"
       const result = await sendPayoutWithPolling(senderEmail, recipientEmail, amount)
       console.log("Payout result:", result)
     } catch (error: any) {
