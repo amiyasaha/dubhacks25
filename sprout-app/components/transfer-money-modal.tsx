@@ -145,8 +145,8 @@ export function TransferMoneyModal({ open, onOpenChange, childName }: TransferMo
     console.log("[v0] Transferring money:", { childName, amount })
 
     try {
-      const senderEmail = "sb-i6wov47082566@personal.example.com"
-      const recipientEmail = "sb-ybtd147070342@business.example.com"
+      const senderEmail = "sb-ybtd147070342@business.example.com"
+      const recipientEmail = "sb-i6wov47082566@personal.example.com"
       const result = await sendPayoutWithPolling(senderEmail, recipientEmail, amount)
       console.log("Payout result:", result)
     } catch (error: any) {
