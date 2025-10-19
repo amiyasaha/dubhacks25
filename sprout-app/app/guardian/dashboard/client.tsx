@@ -233,11 +233,6 @@ export function GuardianDashboardClient({
       </div>
 
       {/* Piggy Bank Footer */}
-      <div className="fixed bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-sprout-green to-transparent pointer-events-none">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
-          <PiggyBank className="w-48" />
-        </div>
-      </div>
 
     </div>
   )

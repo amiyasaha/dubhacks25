@@ -113,14 +113,6 @@ export default function HomePage() {
       </main>
 
       {/* Decorative Piggy Bank */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-48 h-48 pointer-events-none">
-        <div className="relative w-full h-full">
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-24 bg-sprout-pink rounded-t-full"></div>
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-40 h-32 bg-sprout-pink rounded-full"></div>
-          <div className="absolute bottom-8 left-1/4 w-3 h-3 bg-foreground rounded-full"></div>
-          <div className="absolute bottom-8 right-1/4 w-3 h-3 bg-foreground rounded-full"></div>
-        </div>
-      </div>
     </div>
   )
 }
